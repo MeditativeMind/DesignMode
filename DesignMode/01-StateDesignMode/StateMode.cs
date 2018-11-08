@@ -3,64 +3,90 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace StateMode
 {
-
-
     //状态模式
-    public interface IState
-    {
-        void Handle(Context args);
-    }
-    public class StateA : IState
-    {
-        public void Handle(Context args)
-        {
-            if (args.ToString() != this.ToString())
-            {
-                Debug.Log("Change to StateA");
-                args.SetState(this);
-            }
-            Debug.Log("StateA:" + args);
-        }
-    }
-    public class StateB : IState
-    {
-        public void Handle(Context args)
-        {
-            if (args.ToString() != this.ToString())
-            {
-                Debug.Log("Change to StateB");
-                args.SetState(this);
-            }
-            Debug.Log("StateB:" + args);
-        }
-    }
-    public class Context
+    public class Work
     {
         private IState state;
+        public Work()
+        {
+            state = new ForenoonState();
+        }
+        public double Hour;
         public void SetState(IState state)
         {
             this.state = state;
         }
-        public void Handle(Context args)
+        public void WriteProgram()
         {
-            state.Handle(args);
-        }
-        public override string ToString()
-        {
-            return state.GetType().Name;
+            state.WriteProgram(this);
         }
     }
+
+
+
+    public abstract class IState
+    {
+        public abstract void WriteProgram(Work work);
+    }
+    public class ForenoonState : IState
+    {
+        public override void WriteProgram(Work work)
+        {
+            if(work.Hour < 12)
+            {
+                Debug.Log("当前时间"+ work.Hour + "点 上午工作状态");
+            }
+            else
+            {
+                work.SetState(new NoonState());
+                work.WriteProgram();
+            }
+        }
+    }
+    public class NoonState : IState
+    {
+        public override void WriteProgram(Work work)
+        {
+            if (work.Hour < 13)
+            {
+                Debug.Log("当前时间" + work.Hour + "点 中午吃饭状态");
+            }
+            else
+            {
+                work.SetState(new AfterNoonState()); work.WriteProgram();
+            }
+        }
+    }
+    public class AfterNoonState : IState
+    {
+        public override void WriteProgram(Work work)
+        {
+            if (work.Hour < 18)
+            {
+                Debug.Log("当前时间" + work.Hour + "点 下午工作状态");
+            }
+            else
+            {
+                Debug.Log("当前时间" + work.Hour + " 下班了");
+            }
+        }
+    }
+
+
+
     public class StateMode : MonoBehaviour
     {
-
         void Start()
         {
-            Context context = new Context();
-            StateA stateA = new StateA();
-            StateB stateB = new StateB();
-            context.SetState(stateA);
-            stateA.Handle(context);
-            stateB.Handle(context);
+            Work work = new Work();
+            work.Hour = 9;
+            work.WriteProgram();
+            work.Hour = 12;
+            work.WriteProgram();
+            work.Hour = 13;
+            work.WriteProgram();
+            work.Hour = 19;
+            work.WriteProgram();
         }
 
 

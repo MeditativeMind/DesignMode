@@ -65,8 +65,10 @@ namespace ProxyMode
     {
         void Start()
         {
-            Girl girl = new Girl();
-            girl.Name = "李娇娇";
+            Girl girl = new Girl
+            {
+                Name = "李娇娇"
+            };
             Proxy proxy = new Proxy(girl);
             proxy.GiveDolls();
             proxy.GiveFlowers();

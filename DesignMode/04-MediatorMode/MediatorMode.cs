@@ -19,7 +19,8 @@ namespace MediatorMode
         private RoomOriginB roomOriginB;
         public Mediator()
         {
-            roomOriginA = new RoomOriginA(); roomOriginB = new RoomOriginB();
+            roomOriginA = new RoomOriginA();
+            roomOriginB = new RoomOriginB();
         }
         public void Renting(string name)//租房
         {

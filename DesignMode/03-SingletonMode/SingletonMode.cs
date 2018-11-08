@@ -76,12 +76,12 @@ namespace SingletonMode
             //这里同样可以使用锁机制 保证不会多次实例化
             get
             {
-                if (_instance == null) //第一层为了保证 不直接访问锁而造成消耗内存
+                if (instance == null) //第一层为了保证 不直接访问锁而造成消耗内存
                 {
                     GameObject go = new GameObject("SingletonMode");
-                    _instance = go.AddComponent<SingletonMode>();
+                    instance = go.AddComponent<SingletonMode>();
                 }
-                return _instance;
+                return instance;
             }
         }
     }

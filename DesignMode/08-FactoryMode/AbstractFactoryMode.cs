@@ -6,8 +6,7 @@ namespace AbstractFactoryMode
     //抽象工厂模式  
     class User
     {
-        public int ID;
-        public string Name;
+       
     }
 
     interface IUser
